@@ -69,12 +69,14 @@ void modulo_matrices_register(T * const result_matrix,
     result_matrix[i] = tmp_result;
 }
 
-void run_4_kernels_shared(u32 * results, const u32 * const data1, const u32 * const data2,
+void run_4_kernels_register(u32 * results, const u32 * const data1, const u32 * const data2,
 const u32 n_blocks, const u32 block_size) {
+	// TIC();
     add_matrices_register<<<n_blocks, block_size>>>(results, data1, data2);
     subtract_matrices_register<<<n_blocks, block_size>>>(results, data1, data2);
     multiply_matrices_register<<<n_blocks, block_size>>>(results, data1, data2);
     modulo_matrices_register<<<n_blocks, block_size>>>(results, data1, data2);
+	// std::cout << "Register kernels took " << TOC<std::chrono::microseconds>() << " microseconds" << std::endl;
 }
 
 void run_registers(u32 * results, const u32 * const data1, const u32 * const data2,
@@ -93,7 +95,7 @@ const u32 n_blocks, const u32 block_size, const size_t array_size) {
     cudaMemcpy(arr2, data2,
         array_size * sizeof(u32), cudaMemcpyHostToDevice);
 
-    run_4_kernels_shared(device_results, arr1, arr2, n_blocks, block_size);
+    run_4_kernels_register(device_results, arr1, arr2, n_blocks, block_size);
 
 	cudaMemcpy(results, device_results,
         array_size * sizeof(u32), cudaMemcpyDeviceToHost);
