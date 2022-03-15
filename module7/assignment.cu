@@ -35,7 +35,8 @@ const u32 n_blocks, const u32 block_size, const size_t array_size) {
     cudaHostAlloc((void **)&arr2, array_size * sizeof(u32), cudaHostAllocDefault);
 
 	// Start event
-	cudaEventRecord(start);
+	cudaEventRecord(start, stream1);
+    TIC();
 
     // Copy data1 memory to GPU memory
     cudaMemcpyAsync(arr1, data1,
@@ -46,17 +47,27 @@ const u32 n_blocks, const u32 block_size, const size_t array_size) {
     run_4_kernels(device_results, arr1, arr2, n_blocks, block_size, stream1);
 
     // Flush a message through std out while the GPU works
-    std::cout << "I am printing this while the GPU does work..." << std::endl;
+    std::cout << "I, the CPU, am printing this while the GPU does work..." << std::endl;
 
 	cudaMemcpyAsync(results, device_results,
         array_size * sizeof(u32), cudaMemcpyDeviceToHost);
 
-	cudaStreamSynchronize(stream1); // Wait until the stream is clear
-  	cudaEventRecord(stop, stream1); // Record the stop event
-  	cudaEventSynchronize(stop); // Wait until work recorded during the event is done
-    cudaEventElapsedTime(&elapsedTime, start, stop);
+    // Push the stop event onto the kernel launch queue after copying the data out
+    cudaEventRecord(stop, stream1);
 
-    std::cout << "Event took " << elapsedTime << " ms\n";
+    /*
+    We must now synchronize with steam1 since this is asynchronous
+    unlike stream0 which is synchronous by default
+    (host waits for kernel execution to end)
+    */
+	cudaStreamSynchronize(stream1); // Wait for stream1 to complete queued actions
+  	cudaEventSynchronize(stop); // Wait for "stop" to reach the front of the kernel queue
+    
+    std::cout << "CPU waited " << TOC<std::chrono::microseconds>() << " microseconds" << std::endl;
+    
+    // This should be roughly the same as tic/toc
+    cudaEventElapsedTime(&elapsedTime, start, stop);
+    std::cout << "Event took " << elapsedTime*1000 << " microseconds in total\n";
 
     cudaFree(arr1);
     cudaFree(arr2);
