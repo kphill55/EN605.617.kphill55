@@ -17,14 +17,14 @@ const u32 n_blocks, const u32 block_size, cudaStream_t & stream) {
 void run_kernels(u32 * results, const u32 * const data1, const u32 * const data2,
 const u32 n_blocks, const u32 block_size, const size_t array_size) {
 	// Create cuda stream
-	cudaStream_t stream1; 
-  	cudaStreamCreate(&stream1);
+	cudaStream_t stream1;
+    cudaStreamCreate(&stream1);
 
 	// Create events
 	cudaEvent_t start, stop;
 	cudaEventCreate(&start); 
   	cudaEventCreate(&stop);
-    float elapsedTime;
+    float elapsedTime = -1;
 
     // Allocate device memory
     u32 * device_results;
