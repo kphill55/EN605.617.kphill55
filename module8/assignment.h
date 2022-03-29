@@ -15,7 +15,7 @@ template<typename T>
 inline void print_complex_vector(const std::vector<std::complex<T>> & vec) {
 	std::cout << "[";
     for (auto i : vec) {
-        std::cout << "(" << i.real() << "+" <<i.imag() << "),";
+        std::cout << "(" << i.real() << "+" << i.imag() << "j),";
     }
 	std::cout << "]\n";
 }

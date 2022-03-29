@@ -5,4 +5,4 @@ clean:
 	rm assignment.exe
 
 test:
-	./assignment.exe 1024
+	./assignment.exe 32

@@ -54,7 +54,7 @@ void run_fft(c32 * results, const u32 array_num_elements) {
     cudaEventRecord(stop, stream1);
 
     /*
-    We must now synchronize with steam1 since this is asynchronous
+    We must now synchronize with stream1 since this is asynchronous
     unlike stream0 which is synchronous by default
     (host waits for kernel execution to end)
     */
@@ -75,6 +75,7 @@ void run_fft(c32 * results, const u32 array_num_elements) {
 
 void run_matrix_mult(c32 * results, const c32 * const data1, const c32 * const data2, const u32 x_dim, const u32 y_dim) {
     cublasHandle_t handle;
+    cublasStatus_t status;
 
     // Create cuda stream
 	cudaStream_t stream1;
@@ -109,19 +110,21 @@ void run_matrix_mult(c32 * results, const c32 * const data1, const c32 * const d
     // Execute
     cuComplex alpha{1,0};
     cuComplex beta{1,0};
-    cublasCgemm3m(handle, CUBLAS_OP_N, CUBLAS_OP_N, x_dim, y_dim, x_dim, &alpha, arr1, x_dim, arr2, y_dim, &beta, device_results, x_dim);
+    cublasCgemm3m(handle, CUBLAS_OP_T, CUBLAS_OP_T, x_dim, y_dim, x_dim, &alpha, arr1, x_dim, arr2, y_dim, &beta, device_results, x_dim);
 
     // Flush a message through std out while the GPU works
     std::cout << "I, the CPU, am printing this while the GPU does a matrix multiplication..." << std::endl;
 
     // Retrieve the device matrix back to the host
-	cublasGetMatrixAsync(x_dim, y_dim, sizeof(c32), device_results, x_dim, results, y_dim, stream1);
+	status = cublasGetMatrixAsync(x_dim, y_dim, sizeof(c32), device_results, x_dim, results, y_dim, stream1);
+    std::cout << "cuBLAS status code: " << status << "\n";
+
 
     // Push the stop event onto the kernel launch queue after copying the data out
     cudaEventRecord(stop, stream1);
 
     /*
-    We must now synchronize with steam1 since this is asynchronous
+    We must now synchronize with stream1 since this is asynchronous
     unlike stream0 which is synchronous by default
     (host waits for kernel execution to end)
     */
@@ -164,17 +167,24 @@ int main(int argc, char * argv[]) {
 		rx[i] = std::polar(1.0f, i * angular_frequency + initial_phase);
 	}
 
-	// Create 2d array identity matrix
-	std::vector<std::vector<c32>> i_matrix(N_COMPLEX, std::vector<c32> (N_COMPLEX, 0));
+    // I would like to use vectors here but a vector of a vector is not contiguous in memory
 	
+    // Create 2d array identity matrix
+	c32 i_matrix[N_COMPLEX][N_COMPLEX];
 	for (int i = 0; i<N_COMPLEX; ++i) {
 		i_matrix[i][i] = c32{1.0f, 0.0f};
 	}
 	
-	// Create 2d array of twos
-	std::vector<std::vector<c32>> twos(N_COMPLEX, std::vector<c32> (N_COMPLEX, {0, 2}));
+	// Create 2d array of threes
+	c32 threes[N_COMPLEX][N_COMPLEX];
+    for (auto & outer : threes) {
+        for (auto & inner : outer) {
+            inner = c32{0,3};
+        }
+    }
 
-    std::vector<std::vector<c32>> results(N_COMPLEX, std::vector<c32> (N_COMPLEX));
+    // Allocate results matrix
+    c32 results[N_COMPLEX][N_COMPLEX];
 
     // Run FFT
     TIC();
@@ -184,7 +194,16 @@ int main(int argc, char * argv[]) {
 
     // Run matrix mult
     TIC();
-    run_matrix_mult(results.begin()->data(), twos.begin()->data(), i_matrix.begin()->data(), N_COMPLEX, N_COMPLEX);
+    run_matrix_mult(&results[0][0], &threes[0][0], &i_matrix[0][0], N_COMPLEX, N_COMPLEX);
     std::cout << "Stream/event kernel took " << TOC<std::chrono::microseconds>() << " microseconds" << std::endl;
-    print_complex_vector(results.front());    
+    
+    std::cout << "[";
+    for (auto & outer : results) {
+        std::cout << "[";
+        for (const auto & inner : outer) {
+            std::cout << "(" << inner.real() << "+" << inner.imag() << "j),";
+        }
+        std::cout << "]\n";
+    }
+    std::cout << "]\n";
 }
