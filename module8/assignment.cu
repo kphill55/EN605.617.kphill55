@@ -75,7 +75,6 @@ void run_fft(c32 * results, const u32 array_num_elements) {
 
 void run_matrix_mult(c32 * results, const c32 * const data1, const c32 * const data2, const u32 x_dim, const u32 y_dim) {
     cublasHandle_t handle;
-    cublasStatus_t status;
 
     // Create cuda stream
 	cudaStream_t stream1;
@@ -116,9 +115,8 @@ void run_matrix_mult(c32 * results, const c32 * const data1, const c32 * const d
     std::cout << "I, the CPU, am printing this while the GPU does a matrix multiplication..." << std::endl;
 
     // Retrieve the device matrix back to the host
-	status = cublasGetMatrixAsync(x_dim, y_dim, sizeof(c32), device_results, x_dim, results, y_dim, stream1);
-    std::cout << "cuBLAS status code: " << status << "\n";
-
+	cublasGetMatrixAsync(x_dim, y_dim, sizeof(c32), device_results, x_dim, results, y_dim, stream1);
+    // std::cout << "cuBLAS status code: " << status << "\n";
 
     // Push the stop event onto the kernel launch queue after copying the data out
     cudaEventRecord(stop, stream1);
@@ -197,7 +195,7 @@ int main(int argc, char * argv[]) {
     run_matrix_mult(&results[0][0], &threes[0][0], &i_matrix[0][0], N_COMPLEX, N_COMPLEX);
     std::cout << "Stream/event kernel took " << TOC<std::chrono::microseconds>() << " microseconds" << std::endl;
     
-    std::cout << "[";
+    std::cout << "[\n";
     for (auto & outer : results) {
         std::cout << "[";
         for (const auto & inner : outer) {
