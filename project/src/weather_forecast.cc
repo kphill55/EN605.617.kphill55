@@ -18,6 +18,10 @@ JForecast::img_to_rgb(const std::string & image_file) {
     {
         imwrite("starry_night.png", img);
     }
+    cv::Mat image = image.at<cv::Vec3b>(y,x);
+    image.at<cv::Vec3b>(y,x)[0] = newval[0];
+    image.at<cv::Vec3b>(y,x)[1] = newval[1];
+    image.at<cv::Vec3b>(y,x)[2] = newval[2];
 }
 
 JForecast::~JForecast() {
