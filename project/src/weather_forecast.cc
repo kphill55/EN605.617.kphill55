@@ -1,27 +1,27 @@
 #include "weather_forecast.h"
 
-JForecast::JForecast() {
+using uchar = unsigned char;
+using Pixel = cv::Point_3<uchar>
+
+JForecast::JForecast()
+:
+b_host(), g_host(),
+{
 
 }
 
-JForecast::img_to_rgb(const std::string & image_file) {
-    std::string image_path = samples::findFile("starry_night.jpg");
-    Mat img = imread(image_path, IMREAD_COLOR);
-    if(img.empty())
-    {
-        std::cout << "Could not read the image: " << image_path << std::endl;
-        return 1;
-    }
-    imshow("Display window", img);
-    int k = waitKey(0); // Wait for a keystroke in the window
-    if(k == 's')
-    {
-        imwrite("starry_night.png", img);
-    }
-    cv::Mat image = image.at<cv::Vec3b>(y,x);
-    image.at<cv::Vec3b>(y,x)[0] = newval[0];
-    image.at<cv::Vec3b>(y,x)[1] = newval[1];
-    image.at<cv::Vec3b>(y,x)[2] = newval[2];
+JForecast::read_image(const std::string & image_file) {
+    img_buffer = imread(image_file, cv::IMREAD_COLOR);
+}
+
+// The MLE of a Gaussian Mean is the sum of the samples / n
+JForecast::thrust_gauss_mean_MLE(const cv::Mat & img) {
+    // pixels (x,y,z) = (1,2,3) is (b,g,r) = (1,2,3).
+    img.forEach<Pixel>([](const Pixel & pixel, const int position[]) -> void {
+        pixel.x = position[0];
+        pixel.y = position[1];
+        pixel.z = position[2];
+    });
 }
 
 JForecast::~JForecast() {
