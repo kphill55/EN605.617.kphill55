@@ -5,8 +5,13 @@ using Pixel = cv::Point_3<uchar>
 
 JForecast::JForecast()
 :
-b_host(), g_host(),
+b_host(), g_host(), r_host(),
+b_dev(), g_dev(), r_dev();
 {
+
+}
+
+JForecast::~JForecast() {
 
 }
 
@@ -65,8 +70,4 @@ JForecast::thrust_gauss_var_MLE(const cv::Mat & img, Forecast_Feature & ff) {
     // Reduce/accumulate the result
 
     // Divide by n
-}
-
-JForecast::~JForecast() {
-
 }
