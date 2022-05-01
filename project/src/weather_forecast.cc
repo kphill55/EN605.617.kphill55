@@ -61,13 +61,15 @@ JForecast::thrust_gauss_var_MLE(const cv::Mat & img, Forecast_Feature & ff) {
     r_dev = r_host;
 
     // Subtract the mean from each element
-    double b_sum = thrust::S(b_dev.begin(), b_dev.end(), );
-    double g_sum = thrust::reduce(g_dev.begin(), g_dev.end(), );
-    double r_sum = thrust::reduce(r_dev.begin(), r_dev.end(), );
+    double b_sum = thrust::transform(b_dev.begin(), b_dev.end(), );
+    double g_sum = thrust::transform(g_dev.begin(), g_dev.end(), );
+    double r_sum = thrust::transform(r_dev.begin(), r_dev.end(), );
 
     // Square each element
+    thrust::transform(b_dev.begin(), b_dev.end(), );
 
     // Reduce/accumulate the result
+    thrust::reduce(b_dev.begin(), b_dev.end());
 
     // Divide by n
 }
