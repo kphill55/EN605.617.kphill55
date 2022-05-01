@@ -32,6 +32,7 @@ struct Forecast_Feature {
 
 class JForecast {
     public:
+        JForecast(unsigned int)
         // Take a single picture using the jetson camera
         void take_picture();
         // Take a collection of pictures and write a json file containing all their features
