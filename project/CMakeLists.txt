@@ -23,6 +23,11 @@ CONFIGURE_FILE(
     ${CMAKE_BINARY_DIR}/cmake_uninstall.cmake
 @ONLY)
 
+add_custom_target(
+    uninstall
+    ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+)
+
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(tests)
