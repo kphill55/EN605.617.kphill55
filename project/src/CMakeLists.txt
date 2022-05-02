@@ -9,13 +9,14 @@ set_target_properties(
 )
 
 target_include_directories(
-    JForecast INTERFACE ${PROJECT_SOURCE_DIR}/include
+    JForecast PUBLIC
+    ${PROJECT_SOURCE_DIR}/include
     ${OpenCV_INCLUDE_DIRS}
     ${THRUST_INCLUDE_DIR}
 )
 
 target_link_libraries(
-    JForecast
+    JForecast PUBLIC
     nlohmann_json::nlohmann_json
     ${OpenCV_LIBS}
     Thrust
