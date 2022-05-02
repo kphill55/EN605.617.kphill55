@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <cstdint>
 #include <algorithm>
+#include <async>
+#include <fstream>
 
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
@@ -13,7 +15,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/cudaimgproc.hpp>
 
-#include<nlohman/json>
+#include <nlohmann/json>
 
 #ifndef FORECAST_H
 
@@ -32,7 +34,7 @@ struct Forecast_Feature {
 
 class JForecast {
     public:
-        JForecast(unsigned int)
+        JForecast(unsigned int res_rows, unsigned int res_cols);
         // Take a single picture using the jetson camera
         void take_picture();
         // Take a collection of pictures and write a json file containing all their features
@@ -41,6 +43,7 @@ class JForecast {
         void generate_cache();
         // Load the cached training features and compute the closest distance to a feature classify the image
         void forecast();
+        ~JForecast = default;
     private:
         void read_img(const std::string & image_file);
         void thrust_gauss_mean_MLE(const cv::Mat & im, Forecast_Feature & ff);

@@ -22,7 +22,7 @@ target_link_libraries(
     Thrust
 )
 
-install (
+install(
     TARGETS JForecast
     DESTINATION ${CMAKE_INSTALL_LIBDIR}}
 )

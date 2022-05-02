@@ -19,6 +19,10 @@ JForecast::read_image(const std::string & image_file) {
     img_buffer = imread(image_file, cv::IMREAD_COLOR);
 }
 
+JForecast::train_model() {
+
+}
+
 // The MLE of a Gaussian Mean is the sum of the samples / n
 JForecast::thrust_gauss_mean_MLE(const cv::Mat & img, Forecast_Feature & ff) {
     // pixels (x,y,z) = (1,2,3) is (b,g,r) = (1,2,3).
