@@ -21,3 +21,8 @@ target_link_libraries(
     ${OpenCV_LIBS}
     Thrust
 )
+
+install (
+    TARGETS JForecast
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}}
+)
