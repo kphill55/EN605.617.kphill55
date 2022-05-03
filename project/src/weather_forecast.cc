@@ -1,12 +1,14 @@
-#include "weather_forecast.h"
+#include <weather_forecast.h>
 
 using uchar = unsigned char;
-using Pixel = cv::Point_3<uchar>
+using Pixel = cv::Point_3<uchar>;
+using fs = std::filesystem;
+using json = nlohmann::json;
 
 JForecast::JForecast()
 :
 b_host(), g_host(), r_host(),
-b_dev(), g_dev(), r_dev();
+b_dev(), g_dev(), r_dev()
 {
 
 }
@@ -16,10 +18,31 @@ JForecast::~JForecast() {
 }
 
 JForecast::read_image(const std::string & image_file) {
-    img_buffer = imread(image_file, cv::IMREAD_COLOR);
+    _img_buffer = imread(image_file, cv::IMREAD_COLOR);
 }
 
-JForecast::train_model() {
+static void featurize_pic(std::list<Forecast_Feature> & l, const std::string & pic) {
+    // Read picture file
+
+
+    // Save to feature list
+    std::locked_guard(_mut);
+    _feature_condenser.push_back
+
+}
+
+JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
+    std::ofstream of(output_file, std::ios_base::app);
+    fs::path path{pic_dir};
+
+    for (const auto & pic : fs::directory_iterator{path}) {
+        std::async(std::Launch::async, featurize_pic);
+    }
+
+    // Take the newly filled container of features and write each feature to the output json file
+    for (auto feature : _feature_condenser) {
+
+    }
 
 }
 
@@ -49,7 +72,7 @@ JForecast::thrust_gauss_mean_MLE(const cv::Mat & img, Forecast_Feature & ff) {
     ff.rmean = r_sum / img.size();
 }
 
-// The MLE of a Gaussian Variance is the sum of the samples / n
+// The MLE of a Gaussian Variance is the sum of the (samples - mean)^2
 JForecast::thrust_gauss_var_MLE(const cv::Mat & img, Forecast_Feature & ff) {
     // pixels (x,y,z) = (1,2,3) is (b,g,r) = (1,2,3).
     img.forEach<Pixel>([](const Pixel & pixel, const int position[]) -> void {

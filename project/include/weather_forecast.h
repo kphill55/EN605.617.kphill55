@@ -1,11 +1,16 @@
 #include <iostream>
 #include <chrono>
+#include <ctime>
+#include <iomanip>
 #include <string>
 #include <cstdlib>
 #include <cstdint>
 #include <algorithm>
-#include <async>
+#include <future>
+#include <mutex>
 #include <fstream>
+#include <filesystem>
+#include <list>
 
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
@@ -19,8 +24,9 @@
 
 #ifndef FORECAST_H
 
-// Feature to treat an image as a set of Gaussian 
+// Struct to treat a single image as a set of Gaussian features
 struct Forecast_Feature {
+    // The weather classification
     std::string weather;
     // Means
     double bmean;
@@ -32,18 +38,22 @@ struct Forecast_Feature {
     double rvar;
 };
 
+// Jetson Forecast
 class JForecast {
     public:
-        JForecast(unsigned int res_rows, unsigned int res_cols);
+        JForecast(unsigned int pixel_rows, unsigned int pixel_cols);
+        ~JForecast = default;
         // Take a single picture using the jetson camera
-        void take_picture();
-        // Take a collection of pictures and write a json file containing all their features
-        void train_model();
+        void take_picture(unsigned int pixel_rows, unsigned int pixel_cols, const std::string & output_filename);
+        // Take a collection of pictures and write a json file containing all their features and what class these features are
+        void generate_features(const std::string & classification, const std::string & output_file);
         // Read a JSON file of training features and spit out an averaged representation of the training features
-        void generate_cache();
+        void generate_cache(const std::string & dir);
         // Load the cached training features and compute the closest distance to a feature classify the image
         void forecast();
-        ~JForecast = default;
+        static nlohmann::json ff2json(const Forecast_Feature & ff);
+        static Forecast_Feature json2ff(const nlohmann::json & j);
+
     private:
         void read_img(const std::string & image_file);
         void thrust_gauss_mean_MLE(const cv::Mat & im, Forecast_Feature & ff);
@@ -60,7 +70,11 @@ class JForecast {
         thrust::device_vector<unsigned char> g_dev;
         thrust::device_vector<unsigned char> r_dev;
 
-        cv::Mat img_buffer;
+        cv::Mat _img_buffer;
+
+        std::list<Forecast_Feature> _feature_condenser;
+
+        std::mutex _mut;
 
 };
 
