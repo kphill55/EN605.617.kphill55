@@ -9,7 +9,8 @@
 #include <future>
 #include <mutex>
 #include <fstream>
-#include <filesystem>
+// #include <filesystem>
+#include <experimental/filesystem>
 #include <list>
 
 #include <thrust/host_vector.h>
@@ -18,9 +19,9 @@
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
-#include <opencv2/cudaimgproc.hpp>
+// #include <opencv2/cudaimgproc.hpp>
 
-#include <nlohmann/json>
+#include <nlohmann/json.hpp>
 
 #ifndef FORECAST_H
 
@@ -41,8 +42,8 @@ struct Forecast_Feature {
 // Jetson Forecast
 class JForecast {
     public:
-        JForecast(unsigned int pixel_rows, unsigned int pixel_cols);
-        ~JForecast = default;
+        JForecast(const unsigned int pixel_rows, const unsigned int pixel_cols);
+        ~JForecast() = default;
         // Take a single picture using the jetson camera
         void take_picture(unsigned int pixel_rows, unsigned int pixel_cols, const std::string & output_filename);
         // Take a collection of pictures and write a json file containing all their features and what class these features are
@@ -50,7 +51,7 @@ class JForecast {
         // Read a JSON file of training features and spit out an averaged representation of the training features
         void generate_cache(const std::string & dir);
         // Load the cached training features and compute the closest distance to a feature classify the image
-        void forecast();
+        std::string forecast(const std::string & weather_image_file, const std::string & cache_file);
         static nlohmann::json ff2json(const Forecast_Feature & ff);
         static Forecast_Feature json2ff(const nlohmann::json & j);
 

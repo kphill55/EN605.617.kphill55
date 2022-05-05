@@ -10,35 +10,36 @@ T cu_reduce_warp(T val) {
 }
 
 template<typename T>
-    void cu_reduce_warps(T const * inputs, unsigned int input_size, T * outputs) {
-        T sum = 0;
-        for (unsigned int i = blockIdx.x * blockDim.x + threadIdx.x; 
-                i < input_size; 
-                i += blockDim.x * gridDim.x)
-            sum += inputs[i];
+__global__
+void cu_reduce_warps(T const * inputs, unsigned int input_size, T * outputs) {
+    T sum = 0;
+    for (unsigned int i = blockIdx.x * blockDim.x + threadIdx.x; 
+            i < input_size; 
+            i += blockDim.x * gridDim.x)
+        sum += inputs[i];
 
-        __shared__ T shared[32];
-        unsigned int lane = threadIdx.x % warpSize;
-        unsigned int wid = threadIdx.x / warpSize;
+    __shared__ T shared[32];
+    unsigned int lane = threadIdx.x % warpSize;
+    unsigned int wid = threadIdx.x / warpSize;
 
+    sum = cu_reduce_warp(sum);
+    if (lane == 0)
+        shared[wid] = sum;
+
+    // Wait for all partial reductions
+    __syncthreads();
+
+    sum = (threadIdx.x < blockDim.x / warpSize) ? shared[lane] : 0;
+    if (wid == 0)
         sum = cu_reduce_warp(sum);
-        if (lane == 0)
-            shared[wid] = sum;
 
-        // Wait for all partial reductions
-        __syncthreads();
-
-        sum = (threadIdx.x < blockDim.x / warpSize) ? shared[lane] : 0;
-        if (wid == 0)
-            sum = cu_reduce_warp(sum);
-
-        if (threadIdx.x == 0)
-            outputs[blockIdx.x] = sum;
+    if (threadIdx.x == 0)
+        outputs[blockIdx.x] = sum;
 }
 
 template<typename T, typename A>
 __global__
-void add_constant(T result_vector *, A offset)
+void add_constant(T * result_vector, A offset)
 {
     const unsigned int i = blockIdx.x * blockDim.x + threadIdx.x;
     result_vector[i] += offset;

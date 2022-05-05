@@ -1,19 +1,16 @@
 #include <weather_forecast.h>
 
 using uchar = unsigned char;
-using Pixel = cv::Point_3<uchar>;
-using fs = std::filesystem;
+using Pixel = cv::Point3_<uchar>;
+// using fs = std::filesystem;
+using fs = std::experimental::filesystem;
 using json = nlohmann::json;
 
-JForecast::JForecast()
-:
-b_host(), g_host(), r_host(),
-b_dev(), g_dev(), r_dev()
+JForecast::JForecast(const unsigned int pixel_rows, const unsigned int pixel_cols)
+// :
+// b_host(), g_host(), r_host(),
+// b_dev(), g_dev(), r_dev()
 {
-
-}
-
-JForecast::~JForecast() {
 
 }
 
@@ -26,7 +23,7 @@ static void featurize_pic(std::list<Forecast_Feature> & l, const std::string & p
 
 
     // Save to feature list
-    std::locked_guard(_mut);
+    std::lock_guard(_mut);
     _feature_condenser.push_back
 
 }
