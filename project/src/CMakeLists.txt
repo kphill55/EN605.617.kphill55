@@ -2,10 +2,6 @@ add_library(JForecast
     weather_forecast.cc
 )
 
-add_executable(takepic
-    take_picture.cc
-)
-
 set_target_properties(
     JForecast PROPERTIES
     VERSION ${PROJECT_VERSION}
@@ -29,9 +25,4 @@ target_link_libraries(
 install(
     TARGETS JForecast
     DESTINATION ${CMAKE_INSTALL_LIBDIR}}
-)
-
-install(
-    TARGETS takepic
-    DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
