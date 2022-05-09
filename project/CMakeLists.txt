@@ -14,7 +14,7 @@ include(CMakePackageConfigHelpers)
 include(FindPkgConfig)
 include(${CMAKE_SOURCE_DIR}/cmake/FindThrust.cmake)
 
-find_package(OpenCV REQUIRED)
+find_package(OpenCV REQUIRED COMPONENTS core highgui cuda)
 
 SET(CMAKE_CXX_STANDARD 17)
 
