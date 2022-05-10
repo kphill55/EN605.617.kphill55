@@ -16,9 +16,9 @@ include(FindPkgConfig)
 
 find_package(OpenCV REQUIRED COMPONENTS)
 
-SET(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17)
 
-CONFIGURE_FILE(
+configure_file()(
     ${CMAKE_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in
     ${CMAKE_BINARY_DIR}/cmake_uninstall.cmake
 @ONLY)
@@ -28,8 +28,9 @@ add_custom_target(
     ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
 )
 
+option(JSON_BuildTests OFF)
+
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(tests)
 add_subdirectory(json)
-
