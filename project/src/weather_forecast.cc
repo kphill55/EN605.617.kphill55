@@ -1,4 +1,5 @@
 #include <weather_forecast.h>
+#include <cassert>
 
 using uchar = unsigned char;
 using uint = unsigned int;
@@ -125,7 +126,7 @@ T JForecast::calc_distance(T x1, T x2, T y1, T y2) {
 void JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
     // Open up the output file to write the features to
     std::ofstream of(output_file, std::ios_base::app);
-    of.exceptions(std::ifstream::failbit|std::ifstream::badbit);
+    of.exceptions(std::ofstream::failbit|std::ofstream::badbit);
     if (of.is_open() && of.good()) {
         std::experimental::filesystem::path path{pic_dir};
         // Write a json array of features
@@ -135,6 +136,7 @@ void JForecast::generate_features(const std::string & output_file, const std::st
                 classification,
                 -1,-1,-1,-1,-1,-1
             };
+            // Condense the jpeg into a feature and push back
             this->read_image(pic.path());
             this->populate_gmle_means(feature, _img_buf);
             this->populate_gmle_vars(feature, _img_buf);
@@ -143,16 +145,15 @@ void JForecast::generate_features(const std::string & output_file, const std::st
         }
         of << jsonObjects;
     }
-
 }
 
-// // void JForecast::generate_cache() {
-//             std::ifstream input_feature(pic.path());
-//             json jfeature;
-//             input_feature >> jfeature;
-//             json::parse<;
-        // Take the newly filled container of features and write each feature to the output json file
-//         for (auto feature : feature_condenser) {
-
-//         }
-// // // }
+void JForecast::generate_cache(const std::string & training_file, const std::string & cache_file) {
+    std::ifstream input_feature(training_file);
+    json jfeatures;
+    input_feature >> jfeatures;
+    std::vector<Forecast_Feature> feature_condenser = json::parse(jfeatures).get<std::vector<Forecast_Feature>>();
+    // Take the newly filled container of features and write each feature to the output json file
+    for (const Forecast_Feature & feature : feature_condenser) {
+        
+    }
+}
