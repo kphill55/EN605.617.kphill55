@@ -121,8 +121,8 @@ void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
 }
 
 template<typename T>
-T JForecast::calc_distance(T x1, T y1, T z1, T x1, T y2, T z2) {
-    return std::sqrt(std::pow(y-x, 2.0) + std::pow(y2-y1, 2.0) + std::pow(z2-z1, 2.0));
+T JForecast::calc_distance(T x1, T y1, T z1, T x2, T y2, T z2) {
+    return std::sqrt(std::pow(x2-x1, 2.0) + std::pow(y2-y1, 2.0) + std::pow(z2-z1, 2.0));
 }
 
 // Reads a directory full of jpeg files to condense them into a json array in a training file
@@ -184,13 +184,12 @@ void JForecast::generate_cache(const std::string & training_file, const std::str
 // Read the cache
 std::string JForecast::forecast(const std::string & weather_image_file, const std::string & cache_file) {
     // Process the image
-    this->read_image(weather_image_file);
     Forecast_Feature feature{
         "Unknown",
         -1,-1,-1,-1,-1,-1
     };
     // Condense the jpeg into a feature
-    this->read_image(pic.path());
+    this->read_image(weather_image_file);
     this->populate_gmle_means(feature, _img_buf);
     this->populate_gmle_vars(feature, _img_buf);
 
