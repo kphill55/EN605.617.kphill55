@@ -19,8 +19,8 @@ void JForecast::read_image(const std::string & image_file) {
 // The MLE of a Gaussian Mean is the sum of the samples / n
 void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
     // Upload the image to the GPU
-    // static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
-    static cv::cuda::GpuMat device_mat;
+    static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
+    // static cv::cuda::GpuMat device_mat;
     device_mat.upload(m);
     
     // Split into BGR channels
@@ -45,16 +45,16 @@ void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
     r.download(b_result);
 
     // Store the average of each channel in the feature
-    ff.bmean = std::accumulate(b_result.begin<uchar>(), b_result.end<uchar>(), 0) / b_result.total();
-    ff.gmean = std::accumulate(g_result.begin<uchar>(), g_result.end<uchar>(), 0) / g_result.total();
-    ff.rmean = std::accumulate(r_result.begin<uchar>(), r_result.end<uchar>(), 0) / r_result.total();
+    ff.bmean = std::accumulate(b_result.begin<int>(), b_result.end<int>(), 0) / b_result.total();
+    ff.gmean = std::accumulate(g_result.begin<int>(), g_result.end<int>(), 0) / g_result.total();
+    ff.rmean = std::accumulate(r_result.begin<int>(), r_result.end<int>(), 0) / r_result.total();
 }
 
 // The MLE of a Gaussian Variance is the sum of the (samples - mean)^2
 void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     // Upload the image to the GPU
-    // static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
-    static cv::cuda::GpuMat device_mat;
+    static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
+    // static cv::cuda::GpuMat device_mat;
     device_mat.upload(m);
 
     // Split into BGR channels
@@ -89,9 +89,9 @@ void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     r.download(b_result);
 
     // Store the average of each channel in the feature
-    ff.bvar = std::accumulate(b_result.begin<uchar>(), b_result.end<uchar>(), 0) / b_result.total();
-    ff.gvar = std::accumulate(g_result.begin<uchar>(), g_result.end<uchar>(), 0) / g_result.total();
-    ff.rvar = std::accumulate(r_result.begin<uchar>(), r_result.end<uchar>(), 0) / r_result.total();
+    ff.bvar = std::accumulate(b_result.begin<int>(), b_result.end<int>(), 0) / b_result.total();
+    ff.gvar = std::accumulate(g_result.begin<int>(), g_result.end<int>(), 0) / g_result.total();
+    ff.rvar = std::accumulate(r_result.begin<int>(), r_result.end<int>(), 0) / r_result.total();
     
 }
 
