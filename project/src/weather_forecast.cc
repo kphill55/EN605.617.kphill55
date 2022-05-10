@@ -45,9 +45,9 @@ void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
     r.download(b_result);
 
     // Store the average of each channel in the feature
-    ff.bmean = std::accumulate(b_result.begin<uint>(), b_result.end<uint>(), 0) / b_result.total();
-    ff.gmean = std::accumulate(g_result.begin<uint>(), g_result.end<uint>(), 0) / g_result.total();
-    ff.rmean = std::accumulate(r_result.begin<uint>(), r_result.end<uint>(), 0) / r_result.total();
+    ff.bmean = std::accumulate(b_result.begin<uchar>(), b_result.end<uchar>(), 0) / b_result.total();
+    ff.gmean = std::accumulate(g_result.begin<uchar>(), g_result.end<uchar>(), 0) / g_result.total();
+    ff.rmean = std::accumulate(r_result.begin<uchar>(), r_result.end<uchar>(), 0) / r_result.total();
 }
 
 // The MLE of a Gaussian Variance is the sum of the (samples - mean)^2
@@ -89,9 +89,9 @@ void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     r.download(b_result);
 
     // Store the average of each channel in the feature
-    ff.bvar = std::accumulate(b_result.begin<uint>(), b_result.end<uint>(), 0) / b_result.total();
-    ff.gvar = std::accumulate(g_result.begin<uint>(), g_result.end<uint>(), 0) / g_result.total();
-    ff.rvar = std::accumulate(r_result.begin<uint>(), r_result.end<uint>(), 0) / r_result.total();
+    ff.bvar = std::accumulate(b_result.begin<uchar>(), b_result.end<uchar>(), 0) / b_result.total();
+    ff.gvar = std::accumulate(g_result.begin<uchar>(), g_result.end<uchar>(), 0) / g_result.total();
+    ff.rvar = std::accumulate(r_result.begin<uchar>(), r_result.end<uchar>(), 0) / r_result.total();
     
 }
 
