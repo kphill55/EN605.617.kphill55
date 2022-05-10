@@ -125,8 +125,8 @@ void JForecast::generate_features(const std::string & output_file, const std::st
     std::ofstream of(output_file, std::ios_base::app);
     of.exceptions(std::ifstream::failbit|std::ifstream::badbit);
     if (of.is_open() && of.good()) {
-        std::filesystem::path path{pic_dir};
-        for (const auto & pic : std::filesystem::directory_iterator{path}) {
+        std::experimental::filesystem::path path{pic_dir};
+        for (const auto & pic : std::experimental::filesystem::directory_iterator{path}) {
             Forecast_Feature feature;
             this->read_image(pic.path());
             this->populate_gmle_means(feature, _img_buf);
