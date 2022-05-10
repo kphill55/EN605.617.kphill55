@@ -12,14 +12,14 @@ target_include_directories(
     JForecast PUBLIC
     ${PROJECT_SOURCE_DIR}/include
     ${OpenCV_INCLUDE_DIRS}
-    ${THRUST_INCLUDE_DIR}
+    # ${THRUST_INCLUDE_DIR}
 )
 
 target_link_libraries(
     JForecast PUBLIC
-    nlohmann_json::nlohmann_json
+    # nlohmann_json::nlohmann_json
     ${OpenCV_LIBS}
-    Thrust
+    # Thrust
 )
 
 install(
