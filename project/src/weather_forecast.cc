@@ -123,22 +123,25 @@ T JForecast::calc_distance(T x1, T x2, T y1, T y2) {
 }
 
 void JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
-    std::list<Forecast_Feature> feature_condenser;
+    // Open up the output file to write the features to
     std::ofstream of(output_file, std::ios_base::app);
     of.exceptions(std::ifstream::failbit|std::ifstream::badbit);
     if (of.is_open() && of.good()) {
         std::experimental::filesystem::path path{pic_dir};
+        // Write a json array of features
+        auto jsonObjects = json::array();
         for (const auto & pic : std::experimental::filesystem::directory_iterator{path}) {
             Forecast_Feature feature{
                 classification,
-                0,0,0,0,0,0
+                -1,-1,-1,-1,-1,-1
             };
             this->read_image(pic.path());
             this->populate_gmle_means(feature, _img_buf);
             this->populate_gmle_vars(feature, _img_buf);
             json j = feature;
-            of << j;
+            jsonObjects.push_back(j);
         }
+        of << jsonObjects;
     }
 
 }
