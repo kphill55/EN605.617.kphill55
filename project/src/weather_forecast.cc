@@ -145,11 +145,14 @@ void JForecast::generate_features(const std::string & output_file, const std::st
     if (of.is_open() && of.good()) {
         std::experimental::filesystem::path path{pic_dir};
         for (const auto & pic : std::experimental::filesystem::directory_iterator{path}) {
-            Forecast_Feature feature;
+            Forecast_Feature feature{
+                classification,
+                0,0,0,0,0,0
+            };
             this->read_image(pic.path());
             this->populate_gmle_means(feature, _img_buf);
             this->populate_gmle_vars(feature, _img_buf);
-            // json j = feature;
+            json j = feature;
             // of << j;
             // create a person
             person p {"Ned Flanders", "744 Evergreen Terrace", 60};
@@ -164,7 +167,7 @@ void JForecast::generate_features(const std::string & output_file, const std::st
             auto p2 = j.get<person>();
 
             // that's it
-            assert(p == p2);
+            // assert(p == p2);
         }
     }
     
