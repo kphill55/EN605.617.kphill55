@@ -17,7 +17,7 @@ void from_json(const json & j, Forecast_Feature & ff) {
     j.at("rvar").get_to(ff.rvar);
 }
 
-to_json(const json & j, Forecast_Feature & ff) {
+void to_json(const json & j, Forecast_Feature & ff) {
     j.at("weather").get_to(ff.weather);
     j.at("bmean").get_to(ff.bmean);
     j.at("gmean").get_to(ff.gmean);
