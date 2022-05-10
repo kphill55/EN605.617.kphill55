@@ -202,7 +202,7 @@ std::string JForecast::forecast(const std::string & weather_image_file, const st
     std::vector<double> vars(3);
 
     // Find the distances
-    for (int i = 0; i < cached_features.size(), ++i) {
+    for (int i = 0; i < cached_features.size(); ++i) {
         means[i] = calc_distance(
             feature.bmean,
             feature.gmean,
