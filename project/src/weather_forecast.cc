@@ -153,10 +153,7 @@ void JForecast::generate_cache(const std::string & training_file, const std::str
     std::ifstream input_features(training_file);
     input_features.exceptions(std::ifstream::failbit|std::ifstream::badbit);
     if (input_features.is_open() && input_features.good()) {
-        json jfeatures;
-        input_features >> jfeatures;
-        auto j = json::parse(jfeatures);
-        auto fv = j.get<std::vector<Forecast_Feature>>();
+        std::vector<Forecast_Feature> feature_condenser = json::parse(input_features).get<std::vector<Forecast_Feature>>();
         // Take the newly filled container of features and write each feature to the output json file
         // for (const Forecast_Feature & feature : feature_condenser) {
 
