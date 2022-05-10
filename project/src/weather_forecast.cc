@@ -209,7 +209,7 @@ std::string JForecast::forecast(const std::string & weather_image_file, const st
             feature.rmean,
             cached_features[i].bmean,
             cached_features[i].gmean,
-            cached_features[i].rmean,
+            cached_features[i].rmean
         );
         vars[i] = calc_distance(
             feature.bvar,
@@ -217,7 +217,7 @@ std::string JForecast::forecast(const std::string & weather_image_file, const st
             feature.rvar,
             cached_features[i].bvar,
             cached_features[i].gvar,
-            cached_features[i].rvar,
+            cached_features[i].rvar
         );
     }
 
