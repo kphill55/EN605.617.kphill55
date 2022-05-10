@@ -34,7 +34,7 @@ int main(int argc, char * argv[]) {
 
     src.convertTo(src, CV_32S);
     cv::cuda::subtract(src, 3, src);
-    // cv::cuda::sqr(src, src);
+    cv::cuda::sqr(src, src);
 
     // Split the image into BGR
     std::vector<cv::cuda::GpuMat> channels(3);

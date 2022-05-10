@@ -12,9 +12,9 @@ enable_testing()
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(FindPkgConfig)
-include(${CMAKE_SOURCE_DIR}/cmake/FindThrust.cmake)
+# include(${CMAKE_SOURCE_DIR}/cmake/FindThrust.cmake)
 
-find_package(OpenCV REQUIRED COMPONENTS core highgui cuda)
+find_package(OpenCV REQUIRED COMPONENTS)
 
 SET(CMAKE_CXX_STANDARD 17)
 

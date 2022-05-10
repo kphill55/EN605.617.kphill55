@@ -15,6 +15,7 @@
 // #include <filesystem>
 #include <experimental/filesystem>
 #include <list>
+#include <numeric>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/cuda.hpp>

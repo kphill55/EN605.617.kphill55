@@ -1,0 +1,1 @@
+nvcc test_forecast.cc -I /usr/local/include/opencv4/ -lopencv_core -lcuda -lcudart -lopencv_imgproc -lopencv_imgcodecs -lopencv_cudaarithm -o a.bin
