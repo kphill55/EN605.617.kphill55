@@ -5,7 +5,27 @@ using uint = unsigned int;
 // using Pixel = cv::Point3_<uchar>;
 // using fs = std::filesystem;
 // using fs = std::experimental::filesystem;
-// using json = nlohmann::json;
+using json = nlohmann::json;
+
+void from_json(const json & j, Forecast_Feature & ff) {
+    j.at("weather").get_to(ff.weather);
+    j.at("bmean").get_to(ff.bmean);
+    j.at("gmean").get_to(ff.gmean);
+    j.at("rmean").get_to(ff.rmean);
+    j.at("bvar").get_to(ff.bvar);
+    j.at("gvar").get_to(ff.gvar);
+    j.at("rvar").get_to(ff.rvar);
+}
+
+to_json(const json & j, Forecast_Feature & ff) {
+    j.at("weather").get_to(ff.weather);
+    j.at("bmean").get_to(ff.bmean);
+    j.at("gmean").get_to(ff.gmean);
+    j.at("rmean").get_to(ff.rmean);
+    j.at("bvar").get_to(ff.bvar);
+    j.at("gvar").get_to(ff.gvar);
+    j.at("rvar").get_to(ff.rvar);
+}
 
 JForecast::JForecast(const unsigned int pixel_rows, const unsigned int pixel_cols)
 {
@@ -101,13 +121,15 @@ T JForecast::calc_distance(T x1, T x2, T y1, T y2) {
 }
 
 // void JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
+//     std::list<Forecast_Feature>;
 //     std::ofstream of(output_file, std::ios_base::app);
-//     fs::path path{pic_dir};
+    
+//     std::filesystem::experimental::path path{pic_dir};
 
 //     for (const auto & pic : fs::directory_iterator{path}) {
-//         std::async(std::Launch::async, featurize_pic);
-//     }
+        
 
+//     }
 //     // Take the newly filled container of features and write each feature to the output json file
 //     for (auto feature : _feature_condenser) {
 
