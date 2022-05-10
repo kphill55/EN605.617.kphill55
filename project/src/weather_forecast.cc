@@ -4,7 +4,7 @@ using uchar = unsigned char;
 using uint = unsigned int;
 // using Pixel = cv::Point3_<uchar>;
 // using fs = std::filesystem;
-using fs = std::experimental::filesystem;
+// using fs = std::experimental::filesystem;
 using json = nlohmann::json;
 
 void from_json(const json & j, Forecast_Feature & ff) {
@@ -125,8 +125,8 @@ void JForecast::generate_features(const std::string & output_file, const std::st
     std::ofstream of(output_file, std::ios_base::app);
     of.exceptions(std::ifstream::failbit|std::ifstream::badbit);
     if (of.is_open() && of.good()) {
-        fs::path path{pic_dir};
-        for (const auto & pic : fs::directory_iterator{path}) {
+        std::filesystem::path path{pic_dir};
+        for (const auto & pic : std::filesystem::directory_iterator{path}) {
             Forecast_Feature feature;
             this->read_image(pic.path());
             this->populate_gmle_means(feature, _img_buf);
