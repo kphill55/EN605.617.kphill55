@@ -18,7 +18,7 @@ find_package(OpenCV REQUIRED COMPONENTS)
 
 set(CMAKE_CXX_STANDARD 17)
 
-configure_file()(
+configure_file(
     ${CMAKE_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in
     ${CMAKE_BINARY_DIR}/cmake_uninstall.cmake
 @ONLY)
