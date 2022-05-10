@@ -25,6 +25,27 @@
 
 //#include <nlohmann/json.hpp>
 
+template<typename T>
+inline void print_vector(const std::vector<T> & vec) {
+	std::cout << "[";
+    for (auto i : vec) {
+        std::cout << +i << ",";
+    }
+	std::cout << "]\n";
+}
+
+inline void print_cvmat(const cv::Mat & img) {
+    std::cout << "[\n";
+    for (int i = 0; i < img.rows; ++i) {
+        std::cout << "[";
+        for (int j = 0; i < img.cols; ++j) {
+            std::cout << static_cast<int>(img.at<unsigned char>(i,j)) << ",";
+        }
+        std::cout << "]";
+    }
+    std::cout << "]\n";
+}
+
 using uchar = unsigned char;
 
 int main(int argc, char * argv[]) {
