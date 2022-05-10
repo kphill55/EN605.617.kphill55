@@ -67,7 +67,7 @@ class JForecast {
         // Take a collection of pictures and write a json file containing all their features and what class these features are
         void generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification);
         // Read a JSON file of training features and spit out an averaged representation of the training features
-        void generate_cache(const std::string & training_file, const std::string & dir);
+        void generate_cache(const std::string & training_file, const std::string & cache_file);
         // Load the cached training features and compute the closest distance to a feature classify the image
         std::string forecast(const std::string & weather_image_file, const std::string & cache_file);
 

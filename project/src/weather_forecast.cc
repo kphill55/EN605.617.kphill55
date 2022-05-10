@@ -127,9 +127,9 @@ T JForecast::calc_distance(T x1, T x2, T y1, T y2) {
 
 void JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
     // Open up the output file to write the features to
-    std::ofstream output_file(output_file, std::ios_base::app);
-    output_file.exceptions(std::ofstream::failbit|std::ofstream::badbit);
-    if (output_file.is_open() && output_file.good()) {
+    std::ofstream feature_list_file(output_file, std::ios_base::app);
+    feature_list_file.exceptions(std::ofstream::failbit|std::ofstream::badbit);
+    if (feature_list_file.is_open() && feature_list_file.good()) {
         std::experimental::filesystem::path path{pic_dir};
         // Write a json array of features
         auto jsonObjects = json::array();
@@ -145,14 +145,15 @@ void JForecast::generate_features(const std::string & output_file, const std::st
             json j = feature;
             jsonObjects.push_back(j);
         }
-        output_file << jsonObjects;
+        feature_list_file << jsonObjects;
     }
 }
 
 void JForecast::generate_cache(const std::string & training_file, const std::string & cache_file) {
     std::ifstream input_features(cache_file);
-    std::ofstream output_file(cache_file, std::ios_base::app);
+    std::ofstream cf(cache_file, std::ios_base::app);
     input_features.exceptions(std::ifstream::failbit|std::ifstream::badbit);
+    cf.exceptions(std::ofstream::failbit|std::ofstream::badbit);
     if (input_features.is_open() && input_features.good()) {
         // Parse the json file
         std::vector<Forecast_Feature> feature_condenser = json::parse(input_features).get<std::vector<Forecast_Feature>>();
@@ -174,6 +175,6 @@ void JForecast::generate_cache(const std::string & training_file, const std::str
         }
         // Write the condensed feature to file
         json j = f;
-        output_file << j;
+        cf << j;
     }
 }
