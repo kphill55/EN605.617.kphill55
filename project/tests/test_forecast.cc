@@ -54,7 +54,7 @@ int main(int argc, char * argv[]) {
     std::cout << result.size() << "\n";
     std::vector<uchar> array(result.begin<uchar>(), result.end<uchar>());
 
-    double avg = std::accumulate(result.begin<uchar>(), result.end<uchar>(), 0) / result.size();
+    double avg = std::accumulate(result.begin<uchar>(), result.end<uchar>(), 0) / result.total();
     std::cout << avg << "\n";
     print_vector(array);
 
