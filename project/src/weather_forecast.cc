@@ -23,7 +23,7 @@ void from_json(const json& j, person& p) {
     j.at("age").get_to(p.age);
 }
 
-void from_json(Forecast_Feature & ff, const json & j) {
+void from_json(const json & j, Forecast_Feature & ff) {
     j.at("weather").get_to(ff.weather);
     j.at("bmean").get_to(ff.bmean);
     j.at("gmean").get_to(ff.gmean);
@@ -33,7 +33,7 @@ void from_json(Forecast_Feature & ff, const json & j) {
     j.at("rvar").get_to(ff.rvar);
 }
 
-void to_json(json & j, Forecast_Feature & ff) {
+void to_json(json & j, const Forecast_Feature & ff) {
     j = json{
         {"weather", ff.weather},
         {"bmean", ff.bmean},
