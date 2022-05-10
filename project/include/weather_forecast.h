@@ -65,13 +65,11 @@ class JForecast {
         JForecast(const unsigned int pixel_rows, const unsigned int pixel_cols);
         ~JForecast() = default;
         // Take a collection of pictures and write a json file containing all their features and what class these features are
-        void generate_features(const std::string & classification, const std::string & output_file);
+        void generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification);
         // Read a JSON file of training features and spit out an averaged representation of the training features
         void generate_cache(const std::string & training_file, const std::string & dir);
         // Load the cached training features and compute the closest distance to a feature classify the image
         std::string forecast(const std::string & weather_image_file, const std::string & cache_file);
-        // static nlohmann::json ff2json(const Forecast_Feature & ff);
-        // static Forecast_Feature json2ff(const nlohmann::json & j);
 
     private:
         void read_image(const std::string & image_file);

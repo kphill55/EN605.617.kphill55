@@ -120,20 +120,34 @@ T JForecast::calc_distance(T x1, T x2, T y1, T y2) {
     return std::sqrt(std::pow(x2-x1, 2.0) + std::pow(y2-y1, 2.0));
 }
 
-// void JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
-//     std::list<Forecast_Feature>;
-//     std::ofstream of(output_file, std::ios_base::app);
+void JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
+    std::list<Forecast_Feature> feature_condenser;
+    std::ofstream of(output_file, std::ios_base::app);
+    of.exceptions(std::ifstream::failbit|std::ifstream::badbit);
+    if (of.is_open() && of.good()) {
+        std::filesystem::experimental::path path{pic_dir};
+        for (const auto & pic : fs::directory_iterator{path}) {
+            Forecast_Feature feature;
+            this->read_image(pic.path());
+            this->populate_gmle_means(feature, _img_buf);
+            this->populate_gmle_vars(feature, _img_buf);
+            json j = feature;
+            of << j;
+        }
+    }
     
-//     std::filesystem::experimental::path path{pic_dir};
 
-//     for (const auto & pic : fs::directory_iterator{path}) {
-        
 
-//     }
-//     // Take the newly filled container of features and write each feature to the output json file
-//     for (auto feature : _feature_condenser) {
 
-//     }
+}
 
-// }
+// // void JForecast::generate_cache() {
+//             std::ifstream input_feature(pic.path());
+//             json jfeature;
+//             input_feature >> jfeature;
+//             json::parse<;
+        // Take the newly filled container of features and write each feature to the output json file
+//         for (auto feature : feature_condenser) {
 
+//         }
+// // // }
