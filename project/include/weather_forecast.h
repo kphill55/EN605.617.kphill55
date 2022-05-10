@@ -23,6 +23,7 @@
 #include <opencv2/highgui.hpp>
 
 #include <nlohmann/json.hpp>
+#include <nlohmann/adl_serializer.hpp>
 
 template<typename T>
 inline void print_vector(const std::vector<T> & vec) {
