@@ -4,7 +4,7 @@ using uchar = unsigned char;
 using uint = unsigned int;
 // using Pixel = cv::Point3_<uchar>;
 // using fs = std::filesystem;
-using fs = std::experimental::filesystem;
+using fs = std::experimental::filesystem::v1;
 using json = nlohmann::json;
 
 void from_json(const json & j, Forecast_Feature & ff) {
