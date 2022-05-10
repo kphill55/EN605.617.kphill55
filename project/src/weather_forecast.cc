@@ -149,10 +149,10 @@ void JForecast::generate_features(const std::string & output_file, const std::st
             this->read_image(pic.path());
             this->populate_gmle_means(feature, _img_buf);
             this->populate_gmle_vars(feature, _img_buf);
-            json j = feature;
-            of << j;
+            // json j = feature;
+            // of << j;
             // create a person
-            ns::person p {"Ned Flanders", "744 Evergreen Terrace", 60};
+            person p {"Ned Flanders", "744 Evergreen Terrace", 60};
 
             // conversion: person -> json
             json j = p;
@@ -161,7 +161,7 @@ void JForecast::generate_features(const std::string & output_file, const std::st
             // {"address":"744 Evergreen Terrace","age":60,"name":"Ned Flanders"}
 
             // conversion: json -> person
-            auto p2 = j.get<ns::person>();
+            auto p2 = j.get<person>();
 
             // that's it
             assert(p == p2);
