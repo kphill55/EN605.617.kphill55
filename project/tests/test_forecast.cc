@@ -13,6 +13,7 @@
 // #include <filesystem>
 #include <experimental/filesystem>
 #include <list>
+#include <numeric>
 
 //#include <thrust/host_vector.h>
 //#include <thrust/device_vector.h>

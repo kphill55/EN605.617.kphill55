@@ -44,9 +44,9 @@ void JForecast::populate_gmle_means(Forecast_Feature & ff, cv::Mat & m) {
     r.download(b_result);
 
     // Store the average of each channel in the feature
-    ff.bmean = static_cast<double>(std::accumulate(b_result.begin<uint>(), b_result.end<uint>(), 0)) / static_cast<double>(b.total());
-    ff.gmean = static_cast<double>(std::accumulate(g_result.begin<uint>(), g_result.end<uint>(), 0)) / static_cast<double>(g.total());
-    ff.rmean = static_cast<double>(std::accumulate(r_result.begin<uint>(), r_result.end<uint>(), 0)) / static_cast<double>(r.total());
+    ff.bmean = static_cast<double>(std::accumulate(b_result.begin<uint>(), b_result.end<uint>(), 0)) / static_cast<double>(b_result.total());
+    ff.gmean = static_cast<double>(std::accumulate(g_result.begin<uint>(), g_result.end<uint>(), 0)) / static_cast<double>(g_result.total());
+    ff.rmean = static_cast<double>(std::accumulate(r_result.begin<uint>(), r_result.end<uint>(), 0)) / static_cast<double>(r_result.total());
 }
 
 // The MLE of a Gaussian Variance is the sum of the (samples - mean)^2
@@ -87,9 +87,9 @@ void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     r.download(b_result);
 
     // Store the average of each channel in the feature
-    ff.bvar = static_cast<double>(std::accumulate(b_result.begin<uint>(), b_result.end<uint>(), 0)) / static_cast<double>(b.total());
-    ff.gvar = static_cast<double>(std::accumulate(g_result.begin<uint>(), g_result.end<uint>(), 0)) / static_cast<double>(g.total());
-    ff.rvar = static_cast<double>(std::accumulate(r_result.begin<uint>(), r_result.end<uint>(), 0)) / static_cast<double>(r.total());
+    ff.bvar = static_cast<double>(std::accumulate(b_result.begin<uint>(), b_result.end<uint>(), 0)) / static_cast<double>(b_result.total());
+    ff.gvar = static_cast<double>(std::accumulate(g_result.begin<uint>(), g_result.end<uint>(), 0)) / static_cast<double>(g_result.total());
+    ff.rvar = static_cast<double>(std::accumulate(r_result.begin<uint>(), r_result.end<uint>(), 0)) / static_cast<double>(r_result.total());
     
 }
 
