@@ -7,7 +7,7 @@ using uint = unsigned int;
 // using fs = std::experimental::filesystem;
 using json = nlohmann::json;
 
-void from_json(const json & j, Forecast_Feature & ff) {
+void from_json(Forecast_Feature & ff, const json & j) {
     j.at("weather").get_to(ff.weather);
     j.at("bmean").get_to(ff.bmean);
     j.at("gmean").get_to(ff.gmean);
@@ -17,14 +17,16 @@ void from_json(const json & j, Forecast_Feature & ff) {
     j.at("rvar").get_to(ff.rvar);
 }
 
-void to_json(const json & j, Forecast_Feature & ff) {
-    j.at("weather").get_to(ff.weather);
-    j.at("bmean").get_to(ff.bmean);
-    j.at("gmean").get_to(ff.gmean);
-    j.at("rmean").get_to(ff.rmean);
-    j.at("bvar").get_to(ff.bvar);
-    j.at("gvar").get_to(ff.gvar);
-    j.at("rvar").get_to(ff.rvar);
+void to_json(json & j, Forecast_Feature & ff) {
+    j = json{
+        {"weather", ff.weather},
+        {"bmean", ff.bmean},
+        {"gmean", ff.gmean},
+        {"rmean", ff.rmean},
+        {"bvar", ff.bvar},
+        {"gvar", ff.gvar},
+        {"rvar", ff.rvar}
+    }
 }
 
 JForecast::JForecast(const unsigned int pixel_rows, const unsigned int pixel_cols)
