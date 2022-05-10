@@ -127,9 +127,9 @@ T JForecast::calc_distance(T x1, T x2, T y1, T y2) {
 
 void JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
     // Open up the output file to write the features to
-    std::ofstream of(output_file, std::ios_base::app);
-    of.exceptions(std::ofstream::failbit|std::ofstream::badbit);
-    if (of.is_open() && of.good()) {
+    std::ofstream output_file(output_file, std::ios_base::app);
+    output_file.exceptions(std::ofstream::failbit|std::ofstream::badbit);
+    if (output_file.is_open() && output_file.good()) {
         std::experimental::filesystem::path path{pic_dir};
         // Write a json array of features
         auto jsonObjects = json::array();
@@ -145,18 +145,35 @@ void JForecast::generate_features(const std::string & output_file, const std::st
             json j = feature;
             jsonObjects.push_back(j);
         }
-        of << jsonObjects;
+        output_file << jsonObjects;
     }
 }
 
 void JForecast::generate_cache(const std::string & training_file, const std::string & cache_file) {
-    std::ifstream input_features(training_file);
+    std::ifstream input_features(cache_file);
+    std::ofstream output_file(cache_file, std::ios_base::app);
     input_features.exceptions(std::ifstream::failbit|std::ifstream::badbit);
     if (input_features.is_open() && input_features.good()) {
+        // Parse the json file
         std::vector<Forecast_Feature> feature_condenser = json::parse(input_features).get<std::vector<Forecast_Feature>>();
+        // Initialize a feature
+        Forecast_Feature f{
+            feature_condenser.front().weather,
+            -1,-1,-1,-1,-1,-1
+        };
         // Take the newly filled container of features and write each feature to the output json file
-        // for (const Forecast_Feature & feature : feature_condenser) {
-
-        // }
+        for (const Forecast_Feature & feature : feature_condenser) {
+            assert(f.weather == feature.weather)
+            f.weather == feature.weather;
+            f.bmean += feature.bmean / feature_condenser.size();
+            f.gmean += feature.gmean / feature_condenser.size();
+            f.rmean += feature.rmean / feature_condenser.size();
+            f.bvar += feature.bvar / feature_condenser.size();
+            f.gvar += feature.gvar / feature_condenser.size();
+            f.rvar += feature.vvar / feature_condenser.size();
+        }
+        // Write the condensed feature to file
+        json j = f;
+        output_file << j;
     }
 }
