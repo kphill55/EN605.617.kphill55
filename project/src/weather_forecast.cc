@@ -17,7 +17,7 @@ void JForecast::read_image(const std::string & image_file) {
 }
 
 // The MLE of a Gaussian Mean is the sum of the samples / n
-void JForecast::populate_gmle_means(Forecast_Feature & ff, cv::Mat & m) {
+void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
     // Upload the image to the GPU
     static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
     device_mat.upload(m);
