@@ -75,8 +75,10 @@ class JForecast {
         void read_image(const std::string & image_file);
         void populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m);
         void populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m);
+        
         template<typename T>
         inline T calc_distance(T x1, T x2, T y1, T y2);
+        
         cv::Mat _img_buf;
         std::mutex _mut;
 

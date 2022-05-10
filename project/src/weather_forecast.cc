@@ -45,6 +45,7 @@ void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
     static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
     // static cv::cuda::GpuMat device_mat;
     device_mat.upload(m);
+    // src.convertTo(src, CV_32S);
     
     // Split into BGR channels
     static std::vector<cv::cuda::GpuMat> channels(3);
@@ -79,6 +80,7 @@ void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
     // static cv::cuda::GpuMat device_mat;
     device_mat.upload(m);
+    // src.convertTo(src, CV_32S);
 
     // Split into BGR channels
     static std::vector<cv::cuda::GpuMat> channels(3);
@@ -148,12 +150,15 @@ void JForecast::generate_features(const std::string & output_file, const std::st
 }
 
 void JForecast::generate_cache(const std::string & training_file, const std::string & cache_file) {
-    std::ifstream input_feature(training_file);
-    json jfeatures;
-    input_feature >> jfeatures;
-    std::vector<Forecast_Feature> feature_condenser = json::parse(jfeatures).get<std::vector<Forecast_Feature>>();
-    // Take the newly filled container of features and write each feature to the output json file
-    for (const Forecast_Feature & feature : feature_condenser) {
-        
+    std::ifstream input_features(training_file);
+    input_features.exceptions(std::ifstream::failbit|std::ifstream::badbit);
+    if (input_features.is_open() && input_features.good()) {
+        json jfeatures;
+        input_features >> jfeatures;
+        // std::vector<Forecast_Feature> feature_condenser = json::parse(jfeatures).get<std::vector<Forecast_Feature>>();
+        // Take the newly filled container of features and write each feature to the output json file
+        // for (const Forecast_Feature & feature : feature_condenser) {
+
+        // }
     }
 }
