@@ -77,10 +77,10 @@ class JForecast {
         void populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m);
         
         template<typename T>
-        inline T calc_distance(T x1, T x2, T y1, T y2);
+        inline T calc_distance(T x1, T y1, T z1, T x1, T y2, T z2);
         
         cv::Mat _img_buf;
-        std::mutex _mut;
+        // std::mutex _mut;
 
 };
 

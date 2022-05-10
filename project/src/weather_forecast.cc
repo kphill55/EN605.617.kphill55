@@ -121,10 +121,11 @@ void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
 }
 
 template<typename T>
-T JForecast::calc_distance(T x1, T x2, T y1, T y2) {
-    return std::sqrt(std::pow(x2-x1, 2.0) + std::pow(y2-y1, 2.0));
+T JForecast::calc_distance(T x1, T y1, T z1, T x1, T y2, T z2) {
+    return std::sqrt(std::pow(y-x, 2.0) + std::pow(y2-y1, 2.0) + std::pow(z2-z1, 2.0));
 }
 
+// Reads a directory full of jpeg files to condense them into a json array in a training file
 void JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
     // Open up the output file to write the features to
     std::ofstream feature_list_file(output_file, std::ios_base::app);
@@ -149,8 +150,9 @@ void JForecast::generate_features(const std::string & output_file, const std::st
     }
 }
 
+// Takes a training file full of features and generates a weather feature in the cache file
 void JForecast::generate_cache(const std::string & training_file, const std::string & cache_file) {
-    std::ifstream input_features(cache_file);
+    std::ifstream input_features(training_file);
     std::ofstream cf(cache_file, std::ios_base::app);
     input_features.exceptions(std::ifstream::failbit|std::ifstream::badbit);
     cf.exceptions(std::ofstream::failbit|std::ofstream::badbit);
@@ -177,4 +179,66 @@ void JForecast::generate_cache(const std::string & training_file, const std::str
         json j = f;
         cf << j;
     }
+}
+
+// Read the cache
+std::string JForecast::forecast(const std::string & weather_image_file, const std::string & cache_file) {
+    // Process the image
+    this->read_image(weather_image_file);
+    Forecast_Feature feature{
+        "Unknown",
+        -1,-1,-1,-1,-1,-1
+    };
+    // Condense the jpeg into a feature
+    this->read_image(pic.path());
+    this->populate_gmle_means(feature, _img_buf);
+    this->populate_gmle_vars(feature, _img_buf);
+
+    // Read the cache
+    std::ifstream cf(cache_file);
+    cf.exceptions(std::ifstream::failbit|std::ifstream::badbit);
+    std::vector<Forecast_Feature> cached_features = json::parse(cf).get<std::vector<Forecast_Feature>>();
+
+    std::vector<double> means(3);
+    std::vector<double> vars(3);
+
+    // Find the distances
+    for (int i = 0; i < cached_features.size(), ++i) {
+        means[i] = calc_distance(
+            feature.bmean,
+            feature.gmean,
+            feature.rmean,
+            cached_features[i].bmean,
+            cached_features[i].gmean,
+            cached_features[i].rmean,
+        )
+        vars[i] = calc_distance(
+            feature.bvar,
+            feature.gvar,
+            feature.rvar,
+            cached_features[i].bvar,
+            cached_features[i].gvar,
+            cached_features[i].rvar,
+        )
+    }
+
+    // Find the minimum mean
+    auto minm = std::min_element(means.begin(), means.end());
+    int dm = std::distance(means.begin(), minm);
+    std::cout << "Closest mean: " << *minm << " for weather: " << cached_features[dm].weather << "\n";
+
+    // Find the minimum var
+    auto minv = std::min_element(vars.begin(), vars.end());
+    int dv = std::distance(vars.begin(), minv);
+    std::cout << "Closest variance: " << *minv << " for weather: " << cached_features[dv].weather << "\n";
+
+    if (dm == dv) {
+        std::cout << "Decision is " << cached_features[dv].weather << "\n";
+        return cached_features[dv].weather;
+    }
+    else if (dm != dv) {
+        std::cout << "Decision is split between " << cached_features[dv].weather << " and " << cached_features[dm].weather << "\n";
+        return std::string("Split decision!");
+    }
+    return std::string("Error, no decision!");
 }
