@@ -22,8 +22,7 @@
 #include <opencv2/cudaarithm.hpp>
 #include <opencv2/highgui.hpp>
 
-#include <nlohmann/json.hpp>
-#include <nlohmann/adl_serializer.hpp>
+#include <nlohmann/json.hpp>    
 
 template<typename T>
 inline void print_vector(const std::vector<T> & vec) {
@@ -59,6 +58,28 @@ struct Forecast_Feature {
     double gvar;
     double rvar;
 };
+
+void from_json(Forecast_Feature & ff, const nlohmann::json & j) {
+    j.at("weather").get_to(ff.weather);
+    j.at("bmean").get_to(ff.bmean);
+    j.at("gmean").get_to(ff.gmean);
+    j.at("rmean").get_to(ff.rmean);
+    j.at("bvar").get_to(ff.bvar);
+    j.at("gvar").get_to(ff.gvar);
+    j.at("rvar").get_to(ff.rvar);
+}
+
+void to_json(nlohmann::json & j, Forecast_Feature & ff) {
+    j = nlohmann::json{
+        {"weather", ff.weather},
+        {"bmean", ff.bmean},
+        {"gmean", ff.gmean},
+        {"rmean", ff.rmean},
+        {"bvar", ff.bvar},
+        {"gvar", ff.gvar},
+        {"rvar", ff.rvar}
+    };
+}
 
 // Jetson Forecast
 class JForecast {
