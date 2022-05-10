@@ -164,14 +164,14 @@ void JForecast::generate_cache(const std::string & training_file, const std::str
         };
         // Take the newly filled container of features and write each feature to the output json file
         for (const Forecast_Feature & feature : feature_condenser) {
-            assert(f.weather == feature.weather)
+            assert(f.weather == feature.weather);
             f.weather == feature.weather;
             f.bmean += feature.bmean / feature_condenser.size();
             f.gmean += feature.gmean / feature_condenser.size();
             f.rmean += feature.rmean / feature_condenser.size();
             f.bvar += feature.bvar / feature_condenser.size();
             f.gvar += feature.gvar / feature_condenser.size();
-            f.rvar += feature.vvar / feature_condenser.size();
+            f.rvar += feature.rvar / feature_condenser.size();
         }
         // Write the condensed feature to file
         json j = f;
