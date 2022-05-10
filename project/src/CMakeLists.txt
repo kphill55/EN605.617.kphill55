@@ -1,4 +1,4 @@
-add_library(JForecast
+add_library(JForecast SHARED
     weather_forecast.cc
 )
 
