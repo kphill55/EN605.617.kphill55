@@ -5,19 +5,19 @@ using uint = unsigned int;
 // using Pixel = cv::Point3_<uchar>;
 // using fs = std::filesystem;
 using fs = std::experimental::filesystem;
-using json = nlohmann::json;
+// using json = nlohmann::json;
 
 JForecast::JForecast(const unsigned int pixel_rows, const unsigned int pixel_cols)
 {
 
 }
 
-JForecast::read_image(const std::string & image_file) {
+void JForecast::read_image(const std::string & image_file) {
     _img_buf = cv::imread(image_file, cv::IMREAD_COLOR);
 }
 
 // The MLE of a Gaussian Mean is the sum of the samples / n
-JForecast::populate_gmle_means(Forecast_Feature & ff, cv::Mat & m) {
+void JForecast::populate_gmle_means(Forecast_Feature & ff, cv::Mat & m) {
     // Upload the image to the GPU
     static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
     device_mat.upload(m);
@@ -42,7 +42,7 @@ JForecast::populate_gmle_means(Forecast_Feature & ff, cv::Mat & m) {
 }
 
 // The MLE of a Gaussian Variance is the sum of the (samples - mean)^2
-JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
+void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     // Upload the image to the GPU
     static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
     device_mat.upload(m);
@@ -82,7 +82,7 @@ T JForecast::calc_distance(T x1, T x2, T y1, T y2) {
     return std::sqrt(std::pow(x2-x1, 2.0) + std::pow(y2-y1, 2.0));
 }
 
-JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
+void JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
     std::ofstream of(output_file, std::ios_base::app);
     fs::path path{pic_dir};
 

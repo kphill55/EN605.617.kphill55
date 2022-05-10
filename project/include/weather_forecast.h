@@ -73,6 +73,7 @@ class JForecast {
         // static Forecast_Feature json2ff(const nlohmann::json & j);
 
     private:
+        void read_image(const std::string & image_file);
         void populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m);
         void populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m);
         template<typename T>
