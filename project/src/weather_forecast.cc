@@ -26,7 +26,7 @@ void to_json(json & j, Forecast_Feature & ff) {
         {"bvar", ff.bvar},
         {"gvar", ff.gvar},
         {"rvar", ff.rvar}
-    }
+    };
 }
 
 JForecast::JForecast(const unsigned int pixel_rows, const unsigned int pixel_cols)
