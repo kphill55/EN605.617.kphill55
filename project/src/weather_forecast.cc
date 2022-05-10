@@ -7,6 +7,44 @@ using uint = unsigned int;
 // using fs = std::experimental::filesystem;
 using json = nlohmann::json;
 
+struct person {
+    std::string name;
+    std::string address;
+    int age;
+};
+
+void to_json(json& j, const person& p) {
+    j = json{{"name", p.name}, {"address", p.address}, {"age", p.age}};
+}
+
+void from_json(const json& j, person& p) {
+    j.at("name").get_to(p.name);
+    j.at("address").get_to(p.address);
+    j.at("age").get_to(p.age);
+}
+
+void from_json(Forecast_Feature & ff, const json & j) {
+    j.at("weather").get_to(ff.weather);
+    j.at("bmean").get_to(ff.bmean);
+    j.at("gmean").get_to(ff.gmean);
+    j.at("rmean").get_to(ff.rmean);
+    j.at("bvar").get_to(ff.bvar);
+    j.at("gvar").get_to(ff.gvar);
+    j.at("rvar").get_to(ff.rvar);
+}
+
+void to_json(json & j, Forecast_Feature & ff) {
+    j = json{
+        {"weather", ff.weather},
+        {"bmean", ff.bmean},
+        {"gmean", ff.gmean},
+        {"rmean", ff.rmean},
+        {"bvar", ff.bvar},
+        {"gvar", ff.gvar},
+        {"rvar", ff.rvar}
+    };
+}
+
 JForecast::JForecast(const unsigned int pixel_rows, const unsigned int pixel_cols)
 {
 
@@ -113,6 +151,20 @@ void JForecast::generate_features(const std::string & output_file, const std::st
             this->populate_gmle_vars(feature, _img_buf);
             json j = feature;
             of << j;
+            // create a person
+            ns::person p {"Ned Flanders", "744 Evergreen Terrace", 60};
+
+            // conversion: person -> json
+            json j = p;
+
+            std::cout << j << std::endl;
+            // {"address":"744 Evergreen Terrace","age":60,"name":"Ned Flanders"}
+
+            // conversion: json -> person
+            auto p2 = j.get<ns::person>();
+
+            // that's it
+            assert(p == p2);
         }
     }
     
