@@ -30,11 +30,6 @@ void to_json(json & j, const Forecast_Feature & ff) {
     };
 }
 
-JForecast::JForecast(const unsigned int pixel_rows, const unsigned int pixel_cols)
-{
-
-}
-
 void JForecast::read_image(const std::string & image_file) {
     _img_buf = cv::imread(image_file, cv::IMREAD_COLOR);
 }
