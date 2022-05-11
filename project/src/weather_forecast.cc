@@ -70,7 +70,7 @@ void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
 }
 
 // The MLE of a Gaussian Variance is the sum of the (samples - mean)^2
-void JForecast::populate_gmle_vars(Forecast_Feature & ff, cv::Mat & m) {
+void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     // Upload the image to the GPU
     // cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
     cv::cuda::GpuMat device_mat;
