@@ -98,26 +98,6 @@ void populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
 
 int main(int argc, char * argv[]) {
     const cv::Mat img = cv::imread("jforecast_18324_s00_00000.jpg", cv::IMREAD_COLOR);
-    // cv::cuda::GpuMat dst;
-    // cv::cuda::GpuMat src;
-    // src.upload(img);
-
-    // src.convertTo(src, CV_32S);
-    // // cv::cuda::subtract(src, 3, src);
-    // // cv::cuda::sqr(src, src);
-
-    // // Split the image into BGR
-    // std::vector<cv::cuda::GpuMat> channels(3);
-    // cv::cuda::split(src, channels);
-
-    // // Take a single channel and get the average
-    // cv::cuda::GpuMat b = channels[0];
-    // cv::cuda::reduce(b, b, 0, cv::REDUCE_AVG);
-
-    // // Copy the result to the cpu
-    // cv::Mat result;
-    // b.download(result);
-
     // // Accumulate the shortened array and find the average
     // std::cout << (int)result.at<char>(0,0) << "\n";
     // std::cout << result.size() << "\n";
@@ -133,6 +113,9 @@ int main(int argc, char * argv[]) {
                 -1,-1,-1,-1,-1,-1
     };
     populate_gmle_means(ff, img);
+    std::cout << ff.bmean << "\n";
+    std::cout << ff.gmean << "\n";
+    std::cout << ff.rmean << "\n";
     //cv::imshow("Pic", result);
     //cv::waitKey(0);
     return 0;
