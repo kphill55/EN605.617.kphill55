@@ -40,7 +40,7 @@ void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
     // static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
     static cv::cuda::GpuMat device_mat;
     device_mat.upload(m);
-    src.convertTo(src, CV_32S);
+    device_mat.convertTo(src, CV_32S);
     
     // Split into BGR channels
     static std::vector<cv::cuda::GpuMat> channels(3);
@@ -75,7 +75,7 @@ void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     // static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
     static cv::cuda::GpuMat device_mat;
     device_mat.upload(m);
-    src.convertTo(src, CV_32S);
+    device_mat.convertTo(src, CV_32S);
 
     // Split into BGR channels
     static std::vector<cv::cuda::GpuMat> channels(3);
