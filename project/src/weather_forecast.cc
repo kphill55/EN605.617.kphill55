@@ -135,7 +135,7 @@ void JForecast::generate_features(const std::string & output_file, const std::st
                 -1,-1,-1,-1,-1,-1
             };
             // Condense the jpeg into a feature and push back
-            this->read_image(pic.path());
+            this->read_image(pic.path().string());
             this->populate_gmle_means(feature, _img_buf);
             this->populate_gmle_vars(feature, _img_buf);
             json j = feature;
