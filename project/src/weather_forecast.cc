@@ -192,29 +192,32 @@ std::string JForecast::forecast(const std::string & weather_image_file, const st
     cf.exceptions(std::ifstream::failbit|std::ifstream::badbit);
     std::vector<Forecast_Feature> cached_features = json::parse(cf).get<std::vector<Forecast_Feature>>();
 
-    std::vector<double> means(3);
-    std::vector<double> vars(3);
+    std::vector<double> means;
+    std::vector<double> vars;
 
     // Find the distances
     for (int i = 0; i < cached_features.size(); ++i) {
-        means[i] = calc_distance(
+        means.emplace_back(calc_distance(
             feature.bmean,
             feature.gmean,
             feature.rmean,
             cached_features[i].bmean,
             cached_features[i].gmean,
             cached_features[i].rmean
-        );
-        vars[i] = calc_distance(
+        ));
+        vars.emplace_back(calc_distance(
             feature.bvar,
             feature.gvar,
             feature.rvar,
             cached_features[i].bvar,
             cached_features[i].gvar,
             cached_features[i].rvar
-        );
+        ));
     }
-
+    std::cout << "Mean distances:\n";
+    print_vector(means);
+    std::cout << "Var distances:\n";
+    print_vector(means);
     // Find the minimum mean
     auto minm = std::min_element(means.begin(), means.end());
     int dm = std::distance(means.begin(), minm);
