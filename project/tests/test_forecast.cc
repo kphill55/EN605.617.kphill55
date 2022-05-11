@@ -49,14 +49,14 @@ inline void print_cvmat(const cv::Mat & img) {
 using uchar = unsigned char;
 
 int main(int argc, char * argv[]) {
-    cv::Mat img = cv::imread("jforecast_18324_s00_00000.jpg", cv::IMREAD_COLOR);
+    const cv::Mat img = cv::imread("jforecast_18324_s00_00000.jpg", cv::IMREAD_COLOR);
     cv::cuda::GpuMat dst;
     cv::cuda::GpuMat src;
     src.upload(img);
 
     src.convertTo(src, CV_32S);
-    cv::cuda::subtract(src, 3, src);
-    cv::cuda::sqr(src, src);
+    // cv::cuda::subtract(src, 3, src);
+    // cv::cuda::sqr(src, src);
 
     // Split the image into BGR
     std::vector<cv::cuda::GpuMat> channels(3);
