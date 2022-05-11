@@ -37,27 +37,27 @@ void JForecast::read_image(const std::string & image_file) {
 // The MLE of a Gaussian Mean is the sum of the samples / n
 void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
     // Upload the image to the GPU
-    // static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
-    static cv::cuda::GpuMat device_mat;
+    // cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
+    cv::cuda::GpuMat device_mat;
     device_mat.upload(m);
     // device_mat.convertTo(device_mat, CV_32S);
     
     // Split into BGR channels
-    static std::vector<cv::cuda::GpuMat> channels(3);
+    std::vector<cv::cuda::GpuMat> channels(3);
     cv::cuda::split(device_mat, channels);
 
-    static cv::cuda::GpuMat b;
-    static cv::cuda::GpuMat g;
-    static cv::cuda::GpuMat r;
+    cv::cuda::GpuMat b;
+    cv::cuda::GpuMat g;
+    cv::cuda::GpuMat r;
     
     // Reduce the channels to their average, this returns one row (0 dimension)
     cv::cuda::reduce(b, channels[0], 0, cv::REDUCE_AVG);
     cv::cuda::reduce(g, channels[1], 0, cv::REDUCE_AVG);
     cv::cuda::reduce(r, channels[2], 0, cv::REDUCE_AVG);
 
-    static cv::Mat b_result;
-    static cv::Mat g_result;
-    static cv::Mat r_result;
+    cv::Mat b_result;
+    cv::Mat g_result;
+    cv::Mat r_result;
 
     b.download(b_result);
     g.download(b_result);
@@ -72,18 +72,18 @@ void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
 // The MLE of a Gaussian Variance is the sum of the (samples - mean)^2
 void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     // Upload the image to the GPU
-    // static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
-    static cv::cuda::GpuMat device_mat;
+    // cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
+    cv::cuda::GpuMat device_mat;
     device_mat.upload(m);
     // device_mat.convertTo(device_mat, CV_32S);
 
     // Split into BGR channels
-    static std::vector<cv::cuda::GpuMat> channels(3);
+    std::vector<cv::cuda::GpuMat> channels(3);
     cv::cuda::split(device_mat, channels);
 
-    static cv::cuda::GpuMat b;
-    static cv::cuda::GpuMat g;
-    static cv::cuda::GpuMat r;
+    cv::cuda::GpuMat b;
+    cv::cuda::GpuMat g;
+    cv::cuda::GpuMat r;
 
     // Subtract the means
     cv::cuda::subtract(b, ff.bmean, channels[0]);
@@ -100,9 +100,9 @@ void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     cv::cuda::reduce(g, channels[1], 0, cv::REDUCE_AVG);
     cv::cuda::reduce(r, channels[2], 0, cv::REDUCE_AVG);
 
-    static cv::Mat b_result;
-    static cv::Mat g_result;
-    static cv::Mat r_result;
+    cv::Mat b_result;
+    cv::Mat g_result;
+    cv::Mat r_result;
 
     b.download(b_result);
     g.download(b_result);
