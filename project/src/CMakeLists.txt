@@ -25,7 +25,7 @@ target_link_libraries(
 
 install(
     TARGETS JForecast
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}}
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 add_executable(generate_features
