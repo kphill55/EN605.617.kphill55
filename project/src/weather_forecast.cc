@@ -119,6 +119,7 @@ T JForecast::calc_distance(T x1, T y1, T z1, T x2, T y2, T z2) {
 // Reads a directory full of jpeg files to condense them into a json array in a training file
 void JForecast::generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification) {
     // Open up the output file to write the features to
+    std::cout << "Generating a json file full of image features of " << classification << " weather\n";
     std::ofstream feature_list_file(output_file, std::ios_base::app);
     feature_list_file.exceptions(std::ofstream::failbit|std::ofstream::badbit);
     if (feature_list_file.is_open() && feature_list_file.good()) {
