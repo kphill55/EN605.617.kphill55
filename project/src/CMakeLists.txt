@@ -43,6 +43,8 @@ add_executable(generate_features
 target_link_libraries(
     generate_features PUBLIC
     JForecast
+    nlohmann_json::nlohmann_json
+    ${OpenCV_LIBS}
     stdc++fs
 )
 
