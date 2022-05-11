@@ -171,7 +171,7 @@ void JForecast::generate_cache(const std::string & training_file, const std::str
         }
         // Write the condensed feature to file
         json j = f;
-        cf << j;
+        cf << "[" j << "," << "]";
     }
 }
 
@@ -218,19 +218,15 @@ std::string JForecast::forecast(const std::string & weather_image_file, const st
     // Find the minimum mean
     auto minm = std::min_element(means.begin(), means.end());
     int dm = std::distance(means.begin(), minm);
-    std::cout << "Closest mean: " << *minm << " for weather: " << cached_features[dm].weather << "\n";
+    std::cout << "Closest mean: " << dm << " entry\n";
 
     // Find the minimum var
     auto minv = std::min_element(vars.begin(), vars.end());
     int dv = std::distance(vars.begin(), minv);
-    std::cout << "Closest variance: " << *minv << " for weather: " << cached_features[dv].weather << "\n";
+    std::cout << "Closest variance: " << dm << " entry\n";
 
-    if (dm == dv) {
-        std::cout << "Decision is " << cached_features[dv].weather << "\n";
-        return cached_features[dv].weather;
-    }
-    else if (dm != dv) {
-        std::cout << "Decision is split between " << cached_features[dv].weather << " and " << cached_features[dm].weather << "\n";
+    if (dm != dv) {
+        std::cout << "Decision is split!\n";
         return std::string("Split decision!");
     }
     return std::string("Error, no decision!");
