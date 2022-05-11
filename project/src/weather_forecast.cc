@@ -221,16 +221,16 @@ std::string JForecast::forecast(const std::string & weather_image_file, const st
     // Find the minimum mean
     auto minm = std::min_element(means.begin(), means.end());
     int dm = std::distance(means.begin(), minm);
-    std::cout << "Closest mean: " << dm << " entry\n";
+    std::cout << "Closest mean: " << dm+1 << " entry!\n";
 
     // Find the minimum var
     auto minv = std::min_element(vars.begin(), vars.end());
     int dv = std::distance(vars.begin(), minv);
-    std::cout << "Closest variance: " << dm << " entry\n";
+    std::cout << "Closest variance: " << dm << " entry!\n";
 
     if (dm != dv) {
         std::cout << "Decision is split!\n";
         return std::string("Split decision!");
     }
-    return std::string("Error, no decision!");
+    return std::string("Decision!");
 }
