@@ -30,10 +30,6 @@ void to_json(json & j, const Forecast_Feature & ff) {
     };
 }
 
-void JForecast::read_image(const std::string & image_file) {
-    _img_buf = cv::imread(image_file, cv::IMREAD_COLOR);
-}
-
 // The MLE of a Gaussian Mean is the sum of the samples / n
 void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
     // Upload the image to the GPU
@@ -135,9 +131,9 @@ void JForecast::generate_features(const std::string & output_file, const std::st
                 -1,-1,-1,-1,-1,-1
             };
             // Condense the jpeg into a feature and push back
-            this->read_image(pic.path().string());
-            this->populate_gmle_means(feature, _img_buf);
-            this->populate_gmle_vars(feature, _img_buf);
+            cv::Mat img = cv::imread(pic.path().string(), cv::IMREAD_COLOR);
+            this->populate_gmle_means(feature, img);
+            this->populate_gmle_vars(feature, img);
             json j = feature;
             jsonObjects.push_back(j);
         }
@@ -184,9 +180,9 @@ std::string JForecast::forecast(const std::string & weather_image_file, const st
         -1,-1,-1,-1,-1,-1
     };
     // Condense the jpeg into a feature
-    this->read_image(weather_image_file);
-    this->populate_gmle_means(feature, _img_buf);
-    this->populate_gmle_vars(feature, _img_buf);
+    cv::Mat img = cv::imread(weather_image_file, cv::IMREAD_COLOR);
+    this->populate_gmle_means(feature, img);
+    this->populate_gmle_vars(feature, img);
 
     // Read the cache
     std::ifstream cf(cache_file);
