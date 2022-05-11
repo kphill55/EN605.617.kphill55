@@ -132,6 +132,7 @@ void JForecast::generate_features(const std::string & output_file, const std::st
                 -1,-1,-1,-1,-1,-1
             };
             // Condense the jpeg into a feature and push back
+            std::cout << "Processing " << pic.path().string() << "\n";
             cv::Mat img = cv::imread(pic.path().string(), cv::IMREAD_COLOR);
             this->populate_gmle_means(feature, img);
             this->populate_gmle_vars(feature, img);
