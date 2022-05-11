@@ -137,7 +137,8 @@ void JForecast::generate_features(const std::string & output_file, const std::st
             this->populate_gmle_means(feature, img);
             this->populate_gmle_vars(feature, img);
             json j = feature;
-            jsonObjects.push_back(j);
+            feature_list_file << feature;
+            // jsonObjects.push_back(j);
         }
         feature_list_file << jsonObjects;
     }
