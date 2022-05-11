@@ -19,6 +19,7 @@ target_link_libraries(
     JForecast PUBLIC
     nlohmann_json::nlohmann_json
     ${OpenCV_LIBS}
+    stdc++fs
     # Thrust
 )
 
@@ -42,16 +43,19 @@ add_executable(weather_forecast
 target_link_libraries(
     generate_features PUBLIC
     JForecast
+    stdc++fs
 )
 
 target_link_libraries(
     generate_cache PUBLIC
     JForecast
+    stdc++fs
 )
 
 target_link_libraries(
     weather_forecast PUBLIC
     JForecast
+    stdc++fs
 )
 
 install(
