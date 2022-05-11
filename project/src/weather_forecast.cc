@@ -171,7 +171,7 @@ void JForecast::generate_cache(const std::string & training_file, const std::str
         }
         // Write the condensed feature to file
         json j = f;
-        cf << "[" j << "," << "]";
+        cf << "[" << j << "," << "]";
     }
 }
 
