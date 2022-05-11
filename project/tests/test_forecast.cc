@@ -73,11 +73,11 @@ int main(int argc, char * argv[]) {
     // Accumulate the shortened array and find the average
     std::cout << (int)result.at<char>(0,0) << "\n";
     std::cout << result.size() << "\n";
-    std::vector<uchar> array(result.begin<uchar>(), result.end<uchar>());
+    std::vector<uchar> array(result.begin<int>(), result.end<int>());
 
-    double avg = std::accumulate(result.begin<uchar>(), result.end<uchar>(), 0) / result.total();
+    double avg = std::accumulate(result.begin<int>(), result.end<int>(), 0) / result.total();
     std::cout << avg << "\n";
-    print_vector(array);
+    // print_vector(array);
 
     //cv::imshow("Pic", result);
     //cv::waitKey(0);
