@@ -1,6 +1,6 @@
 install(
     FILES
-    camera_utils.h
+    benchmarking.h
     weather_forecast.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )

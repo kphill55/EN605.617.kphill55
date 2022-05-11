@@ -26,3 +26,38 @@ install(
     TARGETS JForecast
     DESTINATION ${CMAKE_INSTALL_LIBDIR}}
 )
+
+add_executable(generate_features
+    generate_features.cc
+)
+
+add_executable(generate_cache
+    generate_cache.cc
+)
+
+add_executable(weather_forecast
+    weather_forecast_main.cc
+)
+
+target_link_libraries(
+    generate_features PUBLIC
+    JForecast
+)
+
+target_link_libraries(
+    generate_cache PUBLIC
+    JForecast
+)
+
+target_link_libraries(
+    weather_forecast PUBLIC
+    JForecast
+)
+
+install(
+    TARGETS
+        generate_features
+        generate_cache
+        weather_forecast
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
