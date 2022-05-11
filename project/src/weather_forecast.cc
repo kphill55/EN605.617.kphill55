@@ -217,7 +217,7 @@ std::string JForecast::forecast(const std::string & weather_image_file, const st
     std::cout << "Mean distances:\n";
     print_vector(means);
     std::cout << "Var distances:\n";
-    print_vector(means);
+    print_vector(vars);
     // Find the minimum mean
     auto minm = std::min_element(means.begin(), means.end());
     int dm = std::distance(means.begin(), minm);
