@@ -37,10 +37,10 @@ void JForecast::read_image(const std::string & image_file) {
 // The MLE of a Gaussian Mean is the sum of the samples / n
 void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
     // Upload the image to the GPU
-    static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
-    // static cv::cuda::GpuMat device_mat;
+    // static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
+    static cv::cuda::GpuMat device_mat;
     device_mat.upload(m);
-    // src.convertTo(src, CV_32S);
+    src.convertTo(src, CV_32S);
     
     // Split into BGR channels
     static std::vector<cv::cuda::GpuMat> channels(3);
@@ -72,10 +72,10 @@ void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
 // The MLE of a Gaussian Variance is the sum of the (samples - mean)^2
 void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     // Upload the image to the GPU
-    static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
-    // static cv::cuda::GpuMat device_mat;
+    // static cv::cuda::GpuMat device_mat(m.rows, m.cols, CV_32S);
+    static cv::cuda::GpuMat device_mat;
     device_mat.upload(m);
-    // src.convertTo(src, CV_32S);
+    src.convertTo(src, CV_32S);
 
     // Split into BGR channels
     static std::vector<cv::cuda::GpuMat> channels(3);
