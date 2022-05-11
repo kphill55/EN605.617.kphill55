@@ -62,7 +62,7 @@ struct Forecast_Feature {
 // Jetson Forecast
 class JForecast {
     public:
-        JForecast = default;
+        JForecast() = default;
         ~JForecast() = default;
         // Take a collection of pictures and write a json file containing all their features and what class these features are
         void generate_features(const std::string & output_file, const std::string & pic_dir, const std::string & classification);
