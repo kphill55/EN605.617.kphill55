@@ -221,7 +221,7 @@ std::string JForecast::forecast(const std::string & weather_image_file, const st
     // Find the minimum mean
     auto minm = std::min_element(means.begin(), means.end());
     int dm = std::distance(means.begin(), minm);
-    std::cout << "Closest mean: Cache entry # " << dm+1 << "\n";
+    std::cout << "Closest mean: Cache entry #" << dm+1 << "\n";
 
     // Find the minimum var
     auto minv = std::min_element(vars.begin(), vars.end());
