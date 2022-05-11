@@ -32,13 +32,13 @@ add_executable(generate_features
     generate_features.cc
 )
 
-# add_executable(generate_cache
-#     generate_cache.cc
-# )
+add_executable(generate_cache
+    generate_cache.cc
+)
 
-# add_executable(weather_forecast
-#     weather_forecast_main.cc
-# )
+add_executable(weather_forecast
+    weather_forecast_main.cc
+)
 
 target_link_libraries(
     generate_features PUBLIC
@@ -48,22 +48,26 @@ target_link_libraries(
     stdc++fs
 )
 
-# target_link_libraries(
-#     generate_cache PUBLIC
-#     JForecast
-#     stdc++fs
-# )
+target_link_libraries(
+    generate_cache PUBLIC
+    JForecast
+    nlohmann_json::nlohmann_json
+    ${OpenCV_LIBS}
+    stdc++fs
+)
 
-# target_link_libraries(
-#     weather_forecast PUBLIC
-#     JForecast
-#     stdc++fs
-# )
+target_link_libraries(
+    weather_forecast PUBLIC
+    JForecast
+    nlohmann_json::nlohmann_json
+    ${OpenCV_LIBS}
+    stdc++fs
+)
 
-# install(
-#     TARGETS
-#         generate_features
-#         generate_cache
-#         weather_forecast
-#     DESTINATION ${CMAKE_INSTALL_BINDIR}
-# )
+install(
+    TARGETS
+        generate_features
+        generate_cache
+        weather_forecast
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
