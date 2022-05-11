@@ -8,3 +8,9 @@
 - https://developer.nvidia.com/blog/faster-parallel-reductions-kepler/
 - https://unum.cloud/post/2022-01-28-reduce/
 - https://stackoverflow.com/questions/8932893/accessing-certain-pixel-rgb-value-in-opencv
+
+## Generate Features
+While in the pictures directory, call like this.
+ex. generate_features /tmp/sunny.json $(pwd) sunny
+
+## Generate Cache

@@ -136,13 +136,11 @@ void JForecast::generate_features(const std::string & output_file, const std::st
             cv::Mat img = cv::imread(pic.path().string(), cv::IMREAD_COLOR);
             this->populate_gmle_means(feature, img);
             this->populate_gmle_vars(feature, img);
-            std::cout << ff.bmean << "\n";
-            std::cout << ff.gmean << "\n";
-            std::cout << ff.rmean << "\n";
             json j = feature;
             jsonObjects.push_back(j);
         }
         feature_list_file << jsonObjects;
+        std::cout << "Processed " << jsonObjects.size() << " images\n";
     }
 }
 
