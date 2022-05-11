@@ -7,7 +7,7 @@ int main(int argc, char * argv[]) {
     std::string cache_file(argv[2]);
 
     JForecast forecaster(2592, 1944);
-    forecaster.forecast(img_file, cache_file);
+    std::cout << forecaster.forecast(img_file, cache_file) << "\n";
 
     return 0;
 }

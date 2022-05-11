@@ -8,7 +8,7 @@ int main(int argc, char * argv[]) {
     std::string weather(argv[3]);
     
     JForecast forecaster(2592, 1944);
-    std::cout << forecaster.generate_features(output_file, jpg_dir, weather) << "\n";
+    forecaster.generate_features(output_file, jpg_dir, weather);
 
     return 0;
 }
