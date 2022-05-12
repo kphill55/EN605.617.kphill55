@@ -42,9 +42,9 @@ void JForecast::populate_gmle_means(Forecast_Feature & ff, const cv::Mat & m) {
     std::vector<cv::cuda::GpuMat> channels(3);
     cv::cuda::split(device_mat, channels);
 
-    cv::cuda::GpuMat b = channels[0];
-    cv::cuda::GpuMat g = channels[1];
-    cv::cuda::GpuMat r = channels[2];
+    cv::cuda::GpuMat & b = channels[0];
+    cv::cuda::GpuMat & g = channels[1];
+    cv::cuda::GpuMat & r = channels[2];
     
     // Reduce the channels to their average, this returns one row (0 dimension)
     cv::cuda::reduce(b, b, 0, cv::REDUCE_AVG);
@@ -77,9 +77,9 @@ void JForecast::populate_gmle_vars(Forecast_Feature & ff, const cv::Mat & m) {
     std::vector<cv::cuda::GpuMat> channels(3);
     cv::cuda::split(device_mat, channels);
 
-    cv::cuda::GpuMat b = channels[0];
-    cv::cuda::GpuMat g = channels[1];
-    cv::cuda::GpuMat r = channels[2];
+    cv::cuda::GpuMat & b = channels[0];
+    cv::cuda::GpuMat & g = channels[1];
+    cv::cuda::GpuMat & r = channels[2];
 
     // Subtract the means
     cv::cuda::subtract(b, ff.bmean, b);
